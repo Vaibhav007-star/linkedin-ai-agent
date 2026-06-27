@@ -1,0 +1,14 @@
+openai
+langgraph
+langchain
+python-dotenv
+sqlalchemy
+feedparser
+beautifulsoup4
+requests
+pandas
+pydantic
+loguru
+rich
+typer
+google-genai
