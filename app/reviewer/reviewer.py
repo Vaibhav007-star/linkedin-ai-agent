@@ -1,15 +1,15 @@
 from app.ai.client import AIClient
-from app.image_generator.prompts import IMAGE_PROMPT
+from app.reviewer.prompts import REVIEW_PROMPT
 
 
-class ImagePromptGenerator:
+class Reviewer:
 
     def __init__(self):
         self.ai = AIClient()
 
-    def generate(self, post: str):
+    def review(self, post: str):
 
-        prompt = IMAGE_PROMPT.format(
+        prompt = REVIEW_PROMPT.format(
             post=post
         )
 

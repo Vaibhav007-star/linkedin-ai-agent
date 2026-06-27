@@ -2,14 +2,14 @@ import time
 
 from app.database.database import SessionLocal
 from app.database.models import Article
-from app.image_generator.image_generator import ImagePromptGenerator
+from app.hashtag.generator import HashtagGenerator
 from app.utils.logger import logger
 
 
-class ImagePromptService:
+class HashtagService:
 
     def __init__(self):
-        self.generator = ImagePromptGenerator()
+        self.generator = HashtagGenerator()
 
     def run(self):
 
@@ -20,8 +20,8 @@ class ImagePromptService:
             articles = (
                 db.query(Article)
                 .filter(
-                    Article.is_hashtag_generated == True,
-                    Article.is_image_prompt_generated == False
+                    Article.is_reviewed == True,
+                    Article.is_hashtag_generated == False
                 )
                 .limit(1)
                 .all()
@@ -31,26 +31,27 @@ class ImagePromptService:
 
             for article in articles:
 
-                logger.info(f"Generating image prompt: {article.title}")
+                logger.info(f"Generating hashtags for: {article.title}")
 
                 try:
 
-                    prompt = self.generator.generate(
+                    hashtags = self.generator.generate(
                         article.reviewed_post
                     )
 
-                    article.image_prompt = prompt
-                    article.is_image_prompt_generated = True
+                    article.hashtags = hashtags
+                    article.is_hashtag_generated = True
 
                     db.commit()
 
-                    logger.success("Image prompt generated successfully")
+                    logger.success("Hashtags generated")
 
                     time.sleep(5)
 
                 except Exception as e:
 
                     db.rollback()
+
                     logger.error(e)
 
         finally:

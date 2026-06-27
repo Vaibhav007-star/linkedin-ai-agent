@@ -1,31 +1,55 @@
-from app.collector.rss_collector import RSSCollector
+import sys
+
 from app.database.database import init_db
-from app.summarizer.service import SummarizerService
+from app.runner.runner import ProjectRunner
 from app.utils.logger import logger
-from config.settings import settings
-from app.writer.service import WriterService
+
+
+def show_help():
+
+    logger.info("")
+    logger.info("Available Commands")
+    logger.info("------------------------------")
+    logger.info("python main.py collector")
+    logger.info("python main.py summarizer")
+    logger.info("python main.py writer")
+    logger.info("python main.py reviewer")
+    logger.info("python main.py hashtag")
+    logger.info("python main.py image")
+    logger.info("python main.py publisher")
+    logger.info("python main.py all")
+    logger.info("------------------------------")
 
 
 def main():
 
-    logger.info("🚀 LinkedIn AI Agent Started")
-    logger.info(f"Database: {settings.DATABASE_URL}")
+    logger.info("🚀 LinkedIn AI Agent")
 
     init_db()
 
-    logger.success("Database Initialized Successfully")
+    if len(sys.argv) < 2:
+        show_help()
+        return
 
-    # Collect RSS articles
-    collector = RSSCollector()
-    collector.collect()
+    command = sys.argv[1].lower()
 
-    # Summarize articles with Gemini
-    summarizer = SummarizerService()
-    summarizer.run()
-    writer = WriterService()
-    writer.run()
+    commands = {
+        "collector": ProjectRunner.collector,
+        "summarizer": ProjectRunner.summarizer,
+        "writer": ProjectRunner.writer,
+        "reviewer": ProjectRunner.reviewer,
+        "hashtag": ProjectRunner.hashtag,
+        "image": ProjectRunner.image,
+        "publisher": ProjectRunner.publisher,
+        "all": ProjectRunner.all,
+    }
 
-    logger.success("Project Finished Successfully")
+    if command not in commands:
+        logger.error(f"Unknown command: {command}")
+        show_help()
+        return
+
+    commands[command]()
 
 
 if __name__ == "__main__":

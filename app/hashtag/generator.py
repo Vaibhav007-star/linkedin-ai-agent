@@ -1,15 +1,15 @@
 from app.ai.client import AIClient
-from app.image_generator.prompts import IMAGE_PROMPT
+from app.hashtag.prompts import HASHTAG_PROMPT
 
 
-class ImagePromptGenerator:
+class HashtagGenerator:
 
     def __init__(self):
         self.ai = AIClient()
 
     def generate(self, post: str):
 
-        prompt = IMAGE_PROMPT.format(
+        prompt = HASHTAG_PROMPT.format(
             post=post
         )
 

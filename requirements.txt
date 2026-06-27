@@ -12,3 +12,11 @@ loguru
 rich
 typer
 google-genai
+playwright
+feedparser
+google-generativeai
+loguru
+playwright
+python-dotenv
+requests
+sqlalchemy

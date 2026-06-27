@@ -14,6 +14,8 @@ folders = [
     "tests",
     "docs",
     "scripts",
+    "app/publisher",
+    "storage",
 ]
 
 # =====================================================
@@ -85,6 +87,15 @@ modules = {
         "logger.py",
         "helpers.py",
     ],
+    "ai": [
+    "client.py",
+    "exceptions.py",
+    "models.py",
+    "prompts.py",
+
+    
+],
+
 }
 
 # =====================================================

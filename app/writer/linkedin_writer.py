@@ -1,15 +1,11 @@
-from google import genai
-
-from config.settings import settings
+from app.ai.client import AIClient
 from app.writer.prompts import LINKEDIN_POST_PROMPT
 
 
 class LinkedInWriter:
 
     def __init__(self):
-        self.client = genai.Client(
-            api_key=settings.GEMINI_API_KEY
-        )
+        self.ai = AIClient()
 
     def write_post(self, summary):
 
@@ -17,9 +13,4 @@ class LinkedInWriter:
             summary=summary
         )
 
-        response = self.client.models.generate_content(
-            model="gemini-2.5-flash",
-            contents=prompt
-        )
-
-        return response.text
+        return self.ai.generate(prompt)
