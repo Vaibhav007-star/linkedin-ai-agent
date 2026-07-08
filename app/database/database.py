@@ -3,7 +3,7 @@ from pathlib import Path
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from config.settings import settings
+from app.config.settings import settings
 from app.database.models import Base
 
 # Ensure the database folder exists

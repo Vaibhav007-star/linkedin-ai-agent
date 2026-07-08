@@ -2,14 +2,15 @@ import time
 
 from app.database.database import SessionLocal
 from app.database.models import Article
-from app.image_generator.image_generator import ImagePromptGenerator
+from app.image_generator.downloader import PexelsDownloader
 from app.utils.logger import logger
 
 
 class ImagePromptService:
 
     def __init__(self):
-        self.generator = ImagePromptGenerator()
+
+        self.downloader = PexelsDownloader()
 
     def run(self):
 
@@ -31,27 +32,32 @@ class ImagePromptService:
 
             for article in articles:
 
-                logger.info(f"Generating image prompt: {article.title}")
+                logger.info(f"Downloading image for: {article.title}")
 
                 try:
 
-                    prompt = self.generator.generate(
-                        article.reviewed_post
+                    image_path = self.downloader.download(
+                        article.title,
+                        article.id
                     )
 
-                    article.image_prompt = prompt
+                    if image_path is None:
+                        continue
+
+                    article.image_path = image_path
                     article.is_image_prompt_generated = True
 
                     db.commit()
 
-                    logger.success("Image prompt generated successfully")
+                    logger.success("Image downloaded successfully.")
 
-                    time.sleep(5)
+                    time.sleep(2)
 
                 except Exception as e:
 
                     db.rollback()
-                    logger.error(e)
+
+                    logger.exception(e)
 
         finally:
 

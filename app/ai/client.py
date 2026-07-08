@@ -1,6 +1,6 @@
 from google import genai
 
-from config.settings import settings
+from app.config.settings import settings
 from app.ai.models import GEMINI_FLASH
 
 

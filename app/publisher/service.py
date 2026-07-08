@@ -1,4 +1,5 @@
 from pathlib import Path
+from datetime import datetime
 
 from app.database.database import SessionLocal
 from app.database.models import Article
@@ -41,14 +42,51 @@ class PublisherService:
             if not state.exists():
 
                 logger.warning("LinkedIn login required.")
-
                 client.login()
 
-            else:
+            logger.success("LinkedIn session found.")
 
-                logger.success("LinkedIn session found.")
+            # -----------------------------
+            # Build LinkedIn Post
+            # -----------------------------
 
-                # Playwright publishing will be added next.
+            post = article.reviewed_post
+
+            if article.hashtags:
+                post += "\n\n" + article.hashtags
+
+            # -----------------------------
+            # Publish
+            # -----------------------------
+
+            client.open()
+
+            client.upload_image(article.image_path)
+
+            client.create_post(article.reviewed_post)
+
+            client.publish()
+
+            client.close()  
+
+
+
+            # -----------------------------
+            # Update Database
+            # -----------------------------
+
+            article.is_published = True
+            article.published_at = datetime.utcnow()
+
+            db.commit()
+
+            logger.success("Database updated successfully.")
+
+        except Exception as e:
+
+            db.rollback()
+
+            logger.exception(e)
 
         finally:
 

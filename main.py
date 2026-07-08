@@ -9,16 +9,16 @@ def show_help():
 
     logger.info("")
     logger.info("Available Commands")
-    logger.info("------------------------------")
+    logger.info("----------------------------------------")
     logger.info("python main.py collector")
     logger.info("python main.py summarizer")
     logger.info("python main.py writer")
     logger.info("python main.py reviewer")
     logger.info("python main.py hashtag")
-    logger.info("python main.py image")
+    logger.info("python main.py image_generator")
     logger.info("python main.py publisher")
     logger.info("python main.py all")
-    logger.info("------------------------------")
+    logger.info("----------------------------------------")
 
 
 def main():
@@ -39,7 +39,7 @@ def main():
         "writer": ProjectRunner.writer,
         "reviewer": ProjectRunner.reviewer,
         "hashtag": ProjectRunner.hashtag,
-        "image": ProjectRunner.image,
+        "image_generator": ProjectRunner.image,
         "publisher": ProjectRunner.publisher,
         "all": ProjectRunner.all,
     }
